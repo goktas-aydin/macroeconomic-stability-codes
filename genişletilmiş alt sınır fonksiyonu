@@ -1,0 +1,15 @@
+def ex_low_bound(A, B, ry, g):
+    n = A.shape[0] ; b = LA.norm(B, 2)
+    i = 0 ; l = 0
+    while True:
+        i = i + 1 
+        Q = np.eye(n) ;  H = linalg.solve_discrete_lyapunov(A, Q)
+        k = np.all(np.linalg.eigvals(H) > 0)
+        if k:
+            h = LA.norm(H, 2) ; a = LA.norm(A, 2)
+            z = (-a / b) + math.sqrt(a**2 + (1 / h)) / b ;  r = z * g
+            if r < ry: break
+            A = A - r * B ;  l = l - r ;  
+        else:
+            print("The input A matrix is not Schur stable.") ; break
+    return  l
