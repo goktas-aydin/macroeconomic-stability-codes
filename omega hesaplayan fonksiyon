@@ -1,0 +1,10 @@
+import numpy as np
+from scipy.linalg import solve_discrete_lyapunov as sdl
+
+n = int(input("Boyut: "))
+A = np.array(list(map(float, input("Elemanlar: ").split()))).reshape(n, n)
+print("\nA=", A)
+H = sdl(A, np.eye(n))
+if np.all(np.linalg.eigvals(H) > 0):
+    print(f"\nH={H}\n\n~~~Kararlı~~~\nω(A) =", np.linalg.norm(H, 2))
+else: print("\nhesaplanmadı")
