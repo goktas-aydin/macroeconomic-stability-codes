@@ -1,3 +1,4 @@
+# önce alfa, sonra betaya müdahale (yada önce beta, sonra alfaya müdahale) ile bulunan üst sınır
 def upper_bounds_alfa_beta(A, ry, g, ep):
     n = A_initial.shape[0]
     A = A_initial.copy() # Work on a copy to avoid modifying the original input
