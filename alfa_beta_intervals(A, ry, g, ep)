@@ -1,0 +1,8 @@
+def alfa_beta_intervals(A_initial, ry, g, ep):
+    # Calculate upper bounds
+    u11, u22, _, _ = upper_bounds_alfa_beta(A_initial, ry, g, ep)
+
+    # Calculate lower bounds
+    l11, l22, _, _ = lower_bounds_alfa_beta(A_initial, ry, g, ep)
+
+    return (l11, u11), (l22, u22)
