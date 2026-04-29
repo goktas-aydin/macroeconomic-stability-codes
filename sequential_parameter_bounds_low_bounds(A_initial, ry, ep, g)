@@ -1,0 +1,112 @@
+#
+def calculate_sequential_low_bounds(A_initial, ry, ep, g):
+    n = A_initial.shape[0]
+    A = A_initial.copy()  # Work on a copy of the initial matrix
+
+    # Separate accumulators for each phase's contribution
+    l_combined_contrib = 0.0
+    l_e11_contrib = 0.0
+    l_e22_contrib = 0.0
+
+    i = 0  # Counter for ORTAK ADIM
+    j = 0  # Counter for ALTERNATİF ADIMLAR
+
+    E11 = np.array([[1, 0],
+                    [0, 0]])
+    E22 = np.array([[0, 0],
+                    [0, 1]])
+
+    # ===============================
+    # 1. ORTAK ADIM (E11 + E22) - Lower Bound
+    # ===============================
+    K = A.copy() # K stores A after the common step
+    while True:
+        i += 1
+
+        Q = np.eye(n)
+        H = linalg.solve_discrete_lyapunov(A, Q)
+        if not np.all(np.linalg.eigvals(H) > 0):
+            break
+
+        h = LA.norm(H, 2)
+        a = LA.norm(A, 2)
+
+        B_combined = E11 + E22
+        b = LA.norm(B_combined, 2)
+
+        z = (-a / b) + math.sqrt(a**2 + (1 / h)) / b
+        r = g * z  # Using 'g' parameter for the factor
+
+        if r < ep:
+            break
+
+        A = A - r * B_combined # Subtract for lower bound
+        l_combined_contrib -= r # Accumulate as negative
+        K = A.copy() # Update K with the current A
+
+    # ===============================
+    # 2. ALTERNATİF ADIMLAR - Lower Bound
+    # ===============================
+
+    T = K.copy() # Initialize T for the first E22 step (after first E11 which starts from K)
+
+    while True:
+        j += 1
+
+        # -------------------------
+        # TEK j \u2192 E11 - Lower Bound
+        # -------------------------
+        if j % 2 == 1:
+            B_e11 = E11
+            A = K.copy() # Reset A to the state after last E22 step or common step
+
+            Q = np.eye(n)
+            H = linalg.solve_discrete_lyapunov(A, Q)
+            if not np.all(np.linalg.eigvals(H) > 0):
+                break
+
+            h = LA.norm(H, 2)
+            a = LA.norm(A, 2)
+            b = LA.norm(B_e11, 2)
+
+            z = (-a / b) + math.sqrt(a**2 + (1 / h)) / b
+            r1 = g * z  # Using 'g' parameter for the factor
+
+            if r1 < ry:
+                break
+
+            A = A - r1 * B_e11 # Subtract for lower bound
+            l_e11_contrib -= r1 # Accumulate as negative
+            T = A.copy() # Save A after E11 step for the next E22 step
+
+        # -------------------------
+        # \u00c7\u0130FT j \u2192 E22 - Lower Bound
+        # -------------------------
+        else:
+            B_e22 = E22
+            A = T.copy() # Reset A to the state after the E11 step
+
+            Q = np.eye(n)
+            H = linalg.solve_discrete_lyapunov(A, Q)
+            if not np.all(np.linalg.eigvals(H) > 0):
+                break
+
+            h = LA.norm(H, 2)
+            a = LA.norm(A, 2)
+            b = LA.norm(B_e22, 2)
+
+            z = (-a / b) + math.sqrt(a**2 + (1 / h)) / b
+            r2 = g * z  # Using 'g' parameter for the factor
+
+            if r2 < ry:
+                break
+
+            A = A - r2 * B_e22 # Subtract for lower bound
+            l_e22_contrib -= r2 # Accumulate as negative
+            K = A.copy() # Save A after E22 step for the next E11 step
+
+    # The final A matrix will be the last A from either E11 or E22 step, or K if alternating loop didn't run
+    final_A = A
+    total_l = l_combined_contrib + l_e11_contrib + l_e22_contrib
+
+    return l_combined_contrib, l_e11_contrib, l_e22_contrib, (i + j)
