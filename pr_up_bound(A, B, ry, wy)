@@ -3,14 +3,13 @@ def pr_up_bound(A, B, ry, wy):
     i = 0 ; u = 0
     while True:
         i = i + 1
-        Q = np.eye(n) ;  H = linalg.solve_discrete_lyapunov(A, Q) ; k = np.all(np.linalg.eigvals(H) > 0)
-        if k:
-            h = LA.norm(H, 2) ; a = LA.norm(A, 2)
-            r=(-a/b)+math.sqrt(a**2-(1/wy)+(1/h))/b
-            if r < ry:
-                break
-            A = A + r * B ;  u = u + r
-        else:
-            print("The input A matrix is not Schur stable for the given parameters.")
+        Q = np.eye(n) ;  H = linalg.solve_discrete_lyapunov(A, Q)
+        if not np.all(np.linalg.eigvals(H) > 0):
+            print("could not be computed.")
             break
+        h = LA.norm(H, 2) ; a = LA.norm(A, 2)
+        r=(-a/b)+math.sqrt(a**2-(1/wy)+(1/h))/b
+        if r < ry:
+            break
+        A = A + r * B ;  u = u + r
     return u
