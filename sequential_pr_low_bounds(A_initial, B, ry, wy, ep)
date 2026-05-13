@@ -1,4 +1,4 @@
-# Starting with the E11​+E22​ matrix, the lower bound found by first adding E11​ and then E22​ — intervening first in α and then in β (or first in β, then in α)
+# Starting with the E11​+E22​ matrix, the lower bound found for Schur stability obtained by first adding E11​ and then E22​ — intervening first in α and then in β (or first in β, then in α)
 def sequential_pr_low_bounds(A_initial, B, ry, wy, ep):
     n = A_initial.shape[0]
     A = A_initial.copy()  # Work on a copy of the initial matrix
