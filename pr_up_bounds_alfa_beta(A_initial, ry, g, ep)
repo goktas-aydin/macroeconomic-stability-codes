@@ -1,0 +1,66 @@
+# Pratical Schur Stability Upper bound obtained by intervening first in α then in β (or first in β, then in α)
+def pr_up_bounds_alfa_beta(A_initial, ry, g, ep):
+    n = A_initial.shape[0]
+    A = A_initial.copy() # Work on a copy to avoid modifying the original input
+
+    u11 = 0.0   # e11 upper bound
+    u22 = 0.0   # e22 upper bound
+
+    # ==========================
+    # j = 1 → e11
+    # ==========================
+    B_e11 = np.array([[1, 0],
+                      [0, 0]])
+
+    i11 = 0
+    while True:
+        i11 += 1
+        Q = np.eye(n)
+        H = linalg.solve_discrete_lyapunov(A, Q)
+
+        if not np.all(np.linalg.eigvals(H) > 0):
+            # The matrix A is not Schur stable, cannot proceed
+            print("The matrix A is not Schur stable.")
+            break 
+
+        h = LA.norm(H, 2)
+        a = LA.norm(A, 2)
+        b = LA.norm(B_e11, 2)
+
+        r=(-a/b)+math.sqrt(a**2-(1/wy)+(1/h))/b
+
+        if r < ep:
+            break
+
+        A = A + r * B_e11
+        u11 += r
+
+    # ==========================
+    # j = 2 → e22
+    # ==========================
+    B_e22 = np.array([[0, 0],
+                      [0, 1]])
+
+    i22 = 0
+    while True:
+        i22 += 1
+        Q = np.eye(n)
+        H = linalg.solve_discrete_lyapunov(A, Q)
+
+        if not np.all(np.linalg.eigvals(H) > 0):
+            # The matrix A is not Schur stable, cannot proceed
+            break
+
+        h = LA.norm(H, 2)
+        a = LA.norm(A, 2)
+        b = LA.norm(B_e22, 2)
+
+        r=(-a/b)+math.sqrt(a**2-(1/wy)+(1/h))/b
+
+        if r < ry:
+            break
+
+        A = A + r * B_e22
+        u22 += r
+
+    return u11, u22
