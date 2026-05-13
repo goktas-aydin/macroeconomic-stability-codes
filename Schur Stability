@@ -1,5 +1,0 @@
-import numpy as np
-def schurstable(A):
-    is_stable = np.all(np.abs(np.linalg.eigvals(A)) < 1)
-    print(f"Matrix A is {'Schur stable' if is_stable else 'not Schur stable'}.")
-    return "Schur Stable" if is_stable else "Not Schur Stable"
