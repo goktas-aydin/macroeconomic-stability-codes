@@ -1,4 +1,4 @@
-# Lower bound obtained by intervening first in α then in β (or first in β, then in α)
+# Schur Stability Lower bound obtained by intervening first in α then in β (or first in β, then in α)
 def lower_bounds_alfa_beta(A_initial, ry, g, ep):
     n = A_initial.shape[0]
     A = A_initial.copy() # Work on a copy to avoid modifying the original input
