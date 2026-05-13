@@ -1,0 +1,9 @@
+# önce alfa, sonra betaya müdahale (yada önce beta, sonra alfaya müdahale) ile bulunan aralık
+def pr_schur_intervals_alfa_beta(A_initial,B, ry, g, ep):
+    # Calculate upper bounds
+    u11, u22, _, _ = pr_up_bounds_alfa_beta(A_initial, B, ry, g, ep)
+
+    # Calculate lower bounds
+    l11, l22, _, _ = pr_low_bounds_alfa_beta(A_initial, B, ry, g, ep)
+
+    return (l11, u11), (l22, u22)
