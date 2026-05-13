@@ -1,5 +1,5 @@
 # Practical Schur Stability Lower bound obtained by intervening first in α then in β (or first in β, then in α)
-def pr_low_bounds_alfa_beta(A_initial, ry, wy, ep):
+def pr_low_bounds_alfa_beta(A_initial, B, ry, wy, ep):
     n = A_initial.shape[0]
     A = A_initial.copy() # Work on a copy to avoid modifying the original input
 
