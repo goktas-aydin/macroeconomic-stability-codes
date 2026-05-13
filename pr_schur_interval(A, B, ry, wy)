@@ -12,7 +12,7 @@ def pr_schur_interval(A, B, ry, wy):
                 A_copy = A_copy + (r * B if direction == 'upper' else -r * B)
                 total_r = total_r + (r if direction == 'upper' else -r)
             else:
-                return "not_calculated"
+                return "The matrix A is not Schur stable."
         return float(total_r)
 
     upper_bound = find_bound('upper')
