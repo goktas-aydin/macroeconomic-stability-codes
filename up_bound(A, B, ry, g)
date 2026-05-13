@@ -1,4 +1,4 @@
-def ex_up_bound(A, B, ry, g):
+def up_bound(A, B, ry, g):
     n = A.shape[0] ; b = LA.norm(B, 2)
     i = 0 ; u = 0
     while True:
