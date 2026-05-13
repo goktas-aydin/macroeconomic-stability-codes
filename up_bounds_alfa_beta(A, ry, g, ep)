@@ -20,7 +20,7 @@ def upper_bounds_alfa_beta(A, ry, g, ep):
 
         if not np.all(np.linalg.eigvals(H) > 0):
             # The matrix A is not Schur stable, cannot proceed
-            break
+            break "The matrix A is not Schur stable."
 
         h = LA.norm(H, 2)
         a = LA.norm(A, 2)
