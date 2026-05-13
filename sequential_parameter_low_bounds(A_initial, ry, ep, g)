@@ -26,6 +26,7 @@ def sequential_low_bounds(A_initial, ry, ep, g):
         Q = np.eye(n)
         H = linalg.solve_discrete_lyapunov(A, Q)
         if not np.all(np.linalg.eigvals(H) > 0):
+        print("The matrix A is not Schur stable.")
             break
 
         h = LA.norm(H, 2)
