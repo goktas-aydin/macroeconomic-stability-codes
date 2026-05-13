@@ -1,5 +1,5 @@
 # Starting with the E11​+E22​ matrix, the lower bound found by first adding E11​ and then E22​ — intervening first in α and then in β (or first in β, then in α)
-def sequential_low_bounds(A_initial, B, ry, ep, g):
+def sequential_low_bounds(A_initial, B, ry, g, ep):
     n = A_initial.shape[0]
     A = A_initial.copy()  # Work on a copy of the initial matrix
 
