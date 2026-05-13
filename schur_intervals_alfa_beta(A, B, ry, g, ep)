@@ -1,5 +1,5 @@
 # önce alfa, sonra betaya müdahale (yada önce beta, sonra alfaya müdahale) ile bulunan aralık
-def alfa_beta_intervals(A_initial, ry, g, ep):
+def alfa_beta_intervals(A_initial,B, ry, g, ep):
     # Calculate upper bounds
     u11, u22, _, _ = up_bounds_alfa_beta(A_initial, ry, g, ep)
 
