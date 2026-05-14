@@ -1,10 +1,20 @@
-import numpy as np
-from scipy.linalg import solve_discrete_lyapunov as sdl
+def omega (A):
+  n = A. shape [0] ; I = np.eye (n)
+  w = None # Initialize w to None, as it might not be calculated
+  try:
+    H= linalg . solve_discrete_lyapunov (A, I)
+    p = np.all(np. linalg . eigvals (H) > 0)
+    q = np.all(np. linalg . eigvals (H) < 0)
 
-n = int(input("Boyut: "))
-A = np.array(list(map(float, input("Elemanlar: ").split()))).reshape(n, n)
-print("\nA=", A)
-H = sdl(A, np.eye(n))
-if np.all(np.linalg.eigvals(H) > 0):
-    print(f"\nH={H}\n\n~~~Kararlı~~~\nω(A) =", np.linalg.norm(H, 2))
-else: print("\nhesaplanmadı")
+    if(p):
+      w=LA. norm (H, 2)
+    elif(q):
+      print ("\n Matrix A is not Schur stable (H is negative definite).\n"); print ("\n Omega could not be calculated.\n")
+    else :
+      # H is neither positive nor negative definite, so omega cannot be calculated.
+      print ("\n Lyapunov denklemi çözüldü ancak H ne pozitif ne de negatif tanımlı değil. Omega hesaplanamıyor.\n")
+  except linalg.LinAlgError:
+      print(f"\nA Matris Schur kararlı değil veya singüler.\nOmega hesaplanamadı.\n")
+  except Exception as e:
+      print(f"\nHesaplama sırasında beklenmedik bir hata oluştu: {e}.\nOmega hesaplanamadı.\n")
+  return w
